@@ -7,7 +7,7 @@
 # -------------------------------------------------
 
 from modules import module_sendcommand
-web = module_sendcommand.web() # Python will initalise this object when this when program starts
+# web = module_sendcommand.web() # Python will initalise this object when this when program starts
 
 from modules.config import *
 from PIL import Image
@@ -31,13 +31,15 @@ def processDiscussion(image: complex):
 
     if len(out.intersection(discussion)) != 0: #if one of the keywords for discussion time is present
         print("DISCUSSION [UNMUTED]")
-        web.unmute()
+        return 1
 
     elif len(out.intersection(voting)) != 0: #if one of the keywords for ended voting is present
         print("VOTING ENDED [MUTING SOON]")
 
         time.sleep(delay + time_delay)
-        web.mute() #mute
+        return 2
+    else:
+        return 0
 
 def processEnding(image: complex):
     delay = 4 #Delay between getting role and game starting
@@ -55,22 +57,22 @@ def processEnding(image: complex):
 
     if len(out.intersection(defeat)) != 0: #if one of the keywords for defeat is present
         print("DEFEAT [UNMUTED]")
-        web.unmute()
+        return 1
 
     elif len(out.intersection(victory)) != 0: #if one of the keywords for victory is present
         print("VICTORY [UNMUTED]")
-        web.unmute()
+        return 1
 
     elif len(out.intersection(crewmate)) != 0: #if one of the keywords for crewmate is present
         print("YOU GOT CREWMATE [MUTING SOON]")
 
         time.sleep(delay + time_delay)
-        web.mute() #mute
+        return 2
 
     elif len(out.intersection(imposter)) != 0: #if one of the keywords for imposter is present
         print("YOU GOT IMPOSTER [MUTING SOON]")
 
         time.sleep(delay + time_delay)
-        web.mute() #mute
+        return 2
     else:
-        pass
+        return 0
